@@ -1,44 +1,55 @@
 <?php
-ob_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 
 if (isset($_POST['user_auth'])) {
+    // Your database connection code here
     $mysqli = new mysqli("localhost", "root", "root", "forum");
 
+    // Check for errors
     if ($mysqli->connect_error) {
         die("Connection failed: " . $mysqli->connect_error);
     }
 
-    $stmt = $mysqli->prepare("SELECT id, password FROM users WHERE username = ?");
+    // Prepare and bind the SQL statement
+    $stmt = $mysqli->prepare("SELECT userid, password FROM users WHERE username = ?");
     $stmt->bind_param("s", $username);
 
+    // Get the form data
     $username = $_POST['username'];
     $password = $_POST['password'];
 
+    // Execute the SQL statement
     $stmt->execute();
     $stmt->store_result();
 
+    // Check if the user exists
     if ($stmt->num_rows > 0) {
-        $stmt->bind_result($id, $hashed_password);
+        // Bind the result to variables
+        $stmt->bind_result($userid, $hashed_password);
+        // Fetch the result
         $stmt->fetch();
-
+        // Verify the password
         if (password_verify($password, $hashed_password)) {
+            // Set the session variables
             $_SESSION['loggedin'] = true;
-            $_SESSION['id'] = $id;
+            $_SESSION['userid'] = $userid;
             $_SESSION['username'] = $username;
-
-            header("Location: index.php");
-            exit();
+            // Redirect to the user's dashboard
+            header("Location: forum.php");
+            exit;
         } else {
-            echo "Incorrect password!";
+            $error = "Incorrect password!";
         }
     } else {
-        echo "User not found!";
+        $error = "User not found!";
     }
 
+    // Close the connection
     $stmt->close();
     $mysqli->close();
-
 }
-ob_end_clean(); // Clean the output buffer
 ?>
