@@ -53,7 +53,7 @@
     }
   </style>
 
-  <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+<div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
     <div class="row gx-lg-5 align-items-center mb-5">
       <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
         <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
@@ -65,6 +65,8 @@
         </p>
       </div>
 
+
+
       <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
         <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
         <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
@@ -72,50 +74,48 @@
         <div class="card bg-glass">
           <div class="card-body px-4 py-5 px-md-5">
 
-            <form action="new_user.php"method="post">
-              <!-- 2 column grid layout with text inputs for the first and last names -->
-              <div class="row">
-                <div class="col-md-6 mb-4">
-                  <div data-mdb-input-init class="form-outline">
-                    <input type="text" id="username" class="form-control" />
-                    <label class="form-label" for="form3Example1">Username</label>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-4">
+
+<form action="register.php" method="post">
+
+<div class="row">
+<div class="col-md-6 mb-4">
+<div data-mdb-input-init class="form-outline">
+  <label for="username" class="form-label">Username:</label> 
+  <input id="username" class="form-control" name="username" required="" type="text" />
+  </div>
+  </div>
+
+  <div class="col-md-6 mb-4">
                   
-                </div>
-              </div>
+     </div>
+     </div>
 
-              <!-- Email input -->
-              <div data-mdb-input-init class="form-outline mb-4">
-                <input type="email" id="form3Example3" class="form-control" />
-                <label class="form-label" for="form3Example3">Email address</label>
-              </div>
+     <div data-mdb-input-init class="form-outline mb-4">
+  <label for="email" class="form-label" >Email:</label>
+  <input id="email" class="form-control" name="email" required="" class="form-control" type="email" />
+  </div>
 
-              <!-- Password input -->
-              <div data-mdb-input-init class="form-outline mb-4">
-                <input type="password" id="form3Example4" class="form-control" />
-                <label class="form-label" for="form3Example4">Password</label>
-              </div>
 
-             
+  <div data-mdb-input-init class="form-outline mb-4">
+  <label class="form-label" for="password">Password:</label>
+  <input class="form-control" id="password" name="password" required="" type="password" />
+  </div>
 
-              <!-- Submit button -->
-              <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">
-                Sign up
-              </button>
+  <input name="register" type="submit" value="Register" />
 
-              <!-- Register buttons -->
-              <div class="text-center">
+
+  <div class="text-center">
                 <p>Have an account?: Log in</p>
                 
               </div>
-            </form>
-          </div>
+</form>
+</div>
         </div>
       </div>
     </div>
   </div>
+
+
 </section>
 <!-- Section: Design Block -->
 
