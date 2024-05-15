@@ -10,7 +10,50 @@
 
 </head>
 <body>
-    
+<style>
+    .background-radial-gradient {
+      background-color: hsl(218, 41%, 15%);
+      background-image: radial-gradient(650px circle at 0% 0%,
+          hsl(218, 41%, 35%) 15%,
+          hsl(218, 41%, 30%) 35%,
+          hsl(218, 41%, 20%) 75%,
+          hsl(218, 41%, 19%) 80%,
+          transparent 100%),
+        radial-gradient(1250px circle at 100% 100%,
+          hsl(218, 41%, 45%) 15%,
+          hsl(218, 41%, 30%) 35%,
+          hsl(218, 41%, 20%) 75%,
+          hsl(218, 41%, 19%) 80%,
+          transparent 100%);
+    }
+
+    #radius-shape-1 {
+      height: 220px;
+      width: 220px;
+      top: -60px;
+      left: -130px;
+      background: radial-gradient(#44006b, #ad1fff);
+      overflow: hidden;
+    }
+
+    #radius-shape-2 {
+      border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
+      bottom: -60px;
+      right: -110px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(#44006b, #ad1fff);
+      overflow: hidden;
+    }
+
+    .bg-glass {
+      background-color: hsla(0, 0%, 100%, 0.9) !important;
+      backdrop-filter: saturate(200%) blur(25px);
+    }
+  </style>
+
+
+<section class="background-radial-gradient">
 <button type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#newPostModal">
     New Post
 </button>
@@ -53,26 +96,23 @@ $result = mysqli_query($conn, $sql);
 
 // Display posts
 while ($row = mysqli_fetch_assoc($result)) {
+    
     echo "<div class='card m-3'>";
     echo "<div class='card-header'>{$row['title']}</div>";
     echo "<div class='card-body'>{$row['body']}</div>";
     echo "<div class='card-footer'>Posted by {$row['username']} on {$row['created_at']}</div>";
 
-    // Reply form
-    echo "<div class='card-footer'>";
-    echo "<button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#replyModal{$row['id']}'>Reply</button>";
-    echo "</div>";
+    // Display replies
+    $post_id = $row['id'];
+    $sql_replies = "SELECT comments.*, users.username AS commenter FROM comments JOIN users ON comments.userid_commenting = users.userid WHERE post_id = $post_id ORDER BY created_at";
+    $result_replies = mysqli_query($conn, $sql_replies);
 
-    echo "</div>";
-
-    // Reply modal
-    echo "<div class='modal fade' id='replyModal{$row['id']}' tabindex='-1' aria-labelledby='replyModalLabel{$row['id']}' aria-hidden='true'>";
-    echo "<div class='modal-dialog'>";
-    echo "<div class='modal-content'>";
-    echo "<div class='modal-header'>";
-    echo "<h5 class='modal-title' id='replyModalLabel{$row['id']}'>Reply to Post</h5>";
-    echo "<button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>";
-    echo "</div>";
+    echo "<div class='card-footer'>Replies:</div>";
+    echo "<ul class='list-group list-group-flush'>";
+    while ($reply = mysqli_fetch_assoc($result_replies)) {
+        echo "<li class='list-group-item'>{$reply['commenter']}: {$reply['body']} ({$reply['created_at']})</li>";
+    }
+    echo "</ul>";
     echo "<div class='modal-body'>";
     echo "<form action='reply_post.php' method='post'>";
     echo "<input type='hidden' name='post_id' value='{$row['id']}'>";
@@ -84,13 +124,11 @@ while ($row = mysqli_fetch_assoc($result)) {
     echo "</form>";
     echo "</div>";
     echo "</div>";
-    echo "</div>";
-    echo "</div>";
 }
 ?>
 
 <!-- Form to make a new post -->
 
-
+</section>
 </body>
 </html>
