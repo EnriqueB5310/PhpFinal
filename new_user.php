@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->execute([$firstname, $lastname, $email, $password]);
 
     // Redirect to a success page
-    header("Location: success.php");
+    header("Location: forum.php");
     exit();
 }
 ?>

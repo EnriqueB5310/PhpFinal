@@ -26,7 +26,7 @@
 
       <div class="card bg-glass">
         <div class="card-body px-4 py-5 px-md-5">
-          <form action="login.php" method="post">
+          <form action="new_user.php" method="post">
             <!-- Email input -->
             <div data-mdb-input-init class="form-outline mb-4">
               <input type="email" id="form3Example5" class="form-control" name="email" />
