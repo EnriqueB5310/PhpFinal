@@ -2,7 +2,7 @@ CREATE TABLE users (
     userid INT AUTO_INCREMENT PRIMARY KEY,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    board_username VARCHAR(255) UNIQUE NOT NULL
+    username VARCHAR(255) UNIQUE NOT NULL
 );
 
 CREATE TABLE posts (

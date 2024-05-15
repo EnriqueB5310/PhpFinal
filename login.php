@@ -12,7 +12,8 @@
   <label for="username">Username:</label>
   <input id="username" name="username" required="" type="text" />
   <label for="password">Password:</label> <input id="password" name="password" required="" type="password" />
-  <input name="user_auth" type="submit" value="Login" />
+  <input name="login" type="submit" value="Login" />
+
 </form>
 
 

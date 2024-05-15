@@ -1,40 +1,44 @@
-<?php session_start();
+<?php
+ob_start();
+session_start();
 
-if (isset($_POST['user_auth'])) { 
+if (isset($_POST['user_auth'])) {
+    $mysqli = new mysqli("localhost", "root", "root", "forum");
 
-// Connect to the database 
-$mysqli = new mysqli("localhost", "root", "root", "forum"); 
+    if ($mysqli->connect_error) {
+        die("Connection failed: " . $mysqli->connect_error);
+    }
 
-// Check for errors 
-if ($mysqli->connect_error) { die("Connection failed: " . $mysqli->connect_error); } 
+    $stmt = $mysqli->prepare("SELECT id, password FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
 
-// Prepare and bind the SQL statement 
-$stmt = $mysqli->prepare("SELECT id, password FROM users WHERE username = ?"); $stmt->bind_param("s", $username); 
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-// Get the form data 
-$username = $_POST['username']; $password = $_POST['password']; 
+    $stmt->execute();
+    $stmt->store_result();
 
-// Execute the SQL statement 
-$stmt->execute(); $stmt->store_result(); 
+    if ($stmt->num_rows > 0) {
+        $stmt->bind_result($id, $hashed_password);
+        $stmt->fetch();
 
-// Check if the user exists 
-if ($stmt->num_rows > 0) { 
+        if (password_verify($password, $hashed_password)) {
+            $_SESSION['loggedin'] = true;
+            $_SESSION['id'] = $id;
+            $_SESSION['username'] = $username;
 
-// Bind the result to variables 
-$stmt->bind_result($id, $hashed_password); 
+            header("Location: index.php");
+            exit();
+        } else {
+            echo "Incorrect password!";
+        }
+    } else {
+        echo "User not found!";
+    }
 
-// Fetch the result 
-$stmt->fetch(); 
+    $stmt->close();
+    $mysqli->close();
 
-// Verify the password 
-if (password_verify($password, $hashed_password)) { 
-
-// Set the session variables 
-$_SESSION['loggedin'] = true; $_SESSION['id'] = $id; $_SESSION['username'] = $username; 
-
-// Redirect to the user's dashboard 
-header("Location: forum.php"); exit; } else { echo "Incorrect password!"; } } else { echo "User not found!"; }
-// Close the connection 
-$stmt->close(); $mysqli->close(); }
-
+}
+ob_end_clean(); // Clean the output buffer
 ?>
