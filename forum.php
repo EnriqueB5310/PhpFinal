@@ -1,49 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Message Board</title>
-    <!-- Bootstrap CSS link -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
 </head>
 <body>
-    <div class="container">
-        <h1 class="mt-5 mb-4">Message Board</h1>
+    
 
-        <!-- Post button -->
-        <a href="create_post.php" class="btn btn-primary mb-3">Post</a>
+<?php
+// Include your database connection file
+include('db_connect.php');
 
-        <!-- Display messages and replies -->
-        <?php
-        foreach ($messages as $message) {
-            echo "<div class='card mb-3'>";
-            echo "<div class='card-body'>";
-            echo "<h5 class='card-title'>{$message['title']}</h5>";
-            echo "<p class='card-text'>{$message['body']}</p>";
-            echo "<p class='text-muted'>Posted by: {$message['username']} on {$message['created_at']}</p>";
+// Fetch posts from the database
+$sql = "SELECT posts.*, users.username FROM posts JOIN users ON posts.userid = users.userid ORDER BY created_at DESC";
+$result = mysqli_query($conn, $sql);
 
-            // Reply form
-            echo "<form action='reply.php' method='post'>";
-            echo "<div class='mb-3'>";
-            echo "<input type='hidden' name='post_id' value='{$message['id']}'>";
-            echo "<label for='reply_body' class='form-label'>Reply</label>";
-            echo "<textarea class='form-control' id='reply_body' name='reply_body' rows='3'></textarea>";
-            echo "</div>";
-            echo "<button type='submit' class='btn btn-primary'>Submit Reply</button>";
-            echo "</form>";
+// Display posts
+while ($row = mysqli_fetch_assoc($result)) {
+    echo "<div class='card m-3'>";
+    echo "<div class='card-header'>{$row['title']}</div>";
+    echo "<div class='card-body'>{$row['body']}</div>";
+    echo "<div class='card-footer'>Posted by {$row['username']} on {$row['created_at']}</div>";
+    echo "</div>";
+}
+?>
 
-            // Display replies
-            if (!empty($message['replies'])) {
-                echo "<ul class='list-group list-group-flush'>";
-                foreach ($message['replies'] as $reply) {
-                    echo "<li class='list-group-item'>{$reply['body']} - {$reply['username']} on {$reply['created_at']}</li>";
-                }
-                echo "</ul>";
-            }
-
-            echo "</div>";
-            echo "</div>";
-        }
-        ?>
+<!-- Form to make a new post -->
+<div class="card m-3">
+    <div class="card-header">New Post</div>
+    <div class="card-body">
+        <form action="create_post.php" method="post">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            <div class="mb-3">
+                <label for="body" class="form-label">Body</label>
+                <textarea class="form-control" id="body" name="body" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
     </div>
+</div>
+
 </body>
 </html>
