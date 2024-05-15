@@ -4,7 +4,7 @@ $mysqli = new mysqli("localhost","root","root","forum");
 
 if ($mysqli->connect_error) {die ("Connection failed: " . $mysqli->connect_error); }
 
-$stmt = $mysqli->prepare("INSERT INTO users (board_username, email, password) VALUES (?, ?, ?)"); $stmt->bind_param("sss", $username, $email, $password); 
+$stmt = $mysqli->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)"); $stmt->bind_param("sss", $username, $email, $password); 
 
 $username = $_POST['username']; $email = $_POST['email']; $password = $_POST['password']; 
 

@@ -1,4 +1,6 @@
-<?php session_start(); if (isset($_POST['user_auth'])) { 
+<?php session_start();
+
+if (isset($_POST['user_auth'])) { 
 
 // Connect to the database 
 $mysqli = new mysqli("localhost", "root", "root", "forum"); 
@@ -7,10 +9,10 @@ $mysqli = new mysqli("localhost", "root", "root", "forum");
 if ($mysqli->connect_error) { die("Connection failed: " . $mysqli->connect_error); } 
 
 // Prepare and bind the SQL statement 
-$stmt = $mysqli->prepare("SELECT id, password FROM users WHERE board_username = ?"); $stmt->bind_param("s", $board_username); 
+$stmt = $mysqli->prepare("SELECT id, password FROM users WHERE username = ?"); $stmt->bind_param("s", $username); 
 
 // Get the form data 
-$board_username = $_POST['board_username']; $password = $_POST['password']; 
+$username = $_POST['username']; $password = $_POST['password']; 
 
 // Execute the SQL statement 
 $stmt->execute(); $stmt->store_result(); 
@@ -28,10 +30,11 @@ $stmt->fetch();
 if (password_verify($password, $hashed_password)) { 
 
 // Set the session variables 
-$_SESSION['loggedin'] = true; $_SESSION['id'] = $id; $_SESSION['board_username'] = $board_username; 
+$_SESSION['loggedin'] = true; $_SESSION['id'] = $id; $_SESSION['username'] = $username; 
 
 // Redirect to the user's dashboard 
-header("Location: forum.php"); exit; } else { echo "Incorrect password!"; } } else { echo "User not found!"; } 
-
+header("Location: forum.php"); exit; } else { echo "Incorrect password!"; } } else { echo "User not found!"; }
 // Close the connection 
 $stmt->close(); $mysqli->close(); }
+
+?>
