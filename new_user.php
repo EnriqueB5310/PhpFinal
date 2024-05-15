@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
     // Connect to the database (
-    $pdo = new PDO("mysql:host=localhost;dbname=mydatabase", "username", "password");
+    $pdo = new PDO("mysql:host=localhost;dbname=Forum", "username", "password");
 
     // Prepare the SQL statement
     $stmt = $pdo->prepare("INSERT INTO users (firstname, lastname, email, password) VALUES (?, ?, ?, ?)");
