@@ -105,7 +105,7 @@
 
 
   <div class="text-center">
-                <p>Have an account?: Log in</p>
+                <a href="login.php">Have an account?: Log in</a>
                 
               </div>
 </form>
