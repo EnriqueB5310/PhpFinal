@@ -77,7 +77,7 @@
               <div class="row">
                 <div class="col-md-6 mb-4">
                   <div data-mdb-input-init class="form-outline">
-                    <input type="text" id="form3Example1" class="form-control" />
+                    <input type="text" id="username" class="form-control" />
                     <label class="form-label" for="form3Example1">Username</label>
                   </div>
                 </div>

@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         // Prepare the SQL statement
-        $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?, ?)");
+        $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
 
         // Bind the parameters and execute the statement
         $stmt->execute([$firstname, $lastname, $email, $password]);
