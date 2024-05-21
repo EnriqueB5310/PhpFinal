@@ -12,7 +12,8 @@
 <!-- Section: Design Block -->
 <section class="background-radial-gradient overflow-hidden">
   <style>
-    .background-radial-gradient {
+
+    body {
       background-color: hsl(218, 41%, 15%);
       background-image: radial-gradient(650px circle at 0% 0%,
           hsl(218, 41%, 35%) 15%,
@@ -27,6 +28,7 @@
           hsl(218, 41%, 19%) 80%,
           transparent 100%);
     }
+   
 
     #radius-shape-1 {
       height: 220px;

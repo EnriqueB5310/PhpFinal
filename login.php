@@ -14,6 +14,21 @@
 
 <section class="background-radial-gradient overflow-hidden">
   <style>
+    body {
+      background-color: hsl(218, 41%, 15%);
+      background-image: radial-gradient(650px circle at 0% 0%,
+          hsl(218, 41%, 35%) 15%,
+          hsl(218, 41%, 30%) 35%,
+          hsl(218, 41%, 20%) 75%,
+          hsl(218, 41%, 19%) 80%,
+          transparent 100%),
+        radial-gradient(1250px circle at 100% 100%,
+          hsl(218, 41%, 45%) 15%,
+          hsl(218, 41%, 30%) 35%,
+          hsl(218, 41%, 20%) 75%,
+          hsl(218, 41%, 19%) 80%,
+          transparent 100%);
+    }
     .background-radial-gradient {
       background-color: hsl(218, 41%, 15%);
       background-image: radial-gradient(650px circle at 0% 0%,
@@ -83,7 +98,7 @@
                   </div>
                   </div>
                   <div data-mdb-input-init class="form-outline mb-4">
-        <label for="password" class="form-label">Password:</label>
+        <label for="password" class="form-label text-white">Password:</label>
         <input userid="password" class="form-control" name="password" required="" type="password" /><br>
         <input name="user_auth" type="submit" value="Login" />
         </div>

@@ -10,7 +10,33 @@
 
 </head>
 <body>
+<?php session_start();
+    $username = $_SESSION['username'];
+
+    if (!isset($_SESSION['username'])) {
+        // If not set, redirect to the login page
+        header('Location: login.php');
+        // Ensure no further code is executed after the redirect
+        exit();
+    }
+?>
 <style>
+ body {
+      background-color: hsl(218, 41%, 15%);
+      background-image: radial-gradient(650px circle at 0% 0%,
+          hsl(218, 41%, 35%) 15%,
+          hsl(218, 41%, 30%) 35%,
+          hsl(218, 41%, 20%) 75%,
+          hsl(218, 41%, 19%) 80%,
+          transparent 100%),
+        radial-gradient(1250px circle at 100% 100%,
+          hsl(218, 41%, 45%) 15%,
+          hsl(218, 41%, 30%) 35%,
+          hsl(218, 41%, 20%) 75%,
+          hsl(218, 41%, 19%) 80%,
+          transparent 100%);
+    }
+
     .background-radial-gradient {
       background-color: hsl(218, 41%, 15%);
       background-image: radial-gradient(650px circle at 0% 0%,
@@ -54,12 +80,17 @@
 
 
 <section class="background-radial-gradient">
+    <h1 class="text-white text-center">Signed in as: <?php echo htmlspecialchars($username); ?></h1> 
+
+    <div class="container d-flex justify-content-center">
+   <div class="row ">
 <button type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#newPostModal">
     New Post
 </button>
 
-<a type="button" href="logout.php" class="btn btn-primary m-3"> Sign Out</a>
-
+<a type="button" href="logout.php" class="btn btn-danger m-3"> Sign Out</a>
+</div>
+</div>
 <!-- New Post modal -->
 <div class="modal fade" id="newPostModal" tabindex="-1" aria-labelledby="newPostModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -98,19 +129,19 @@ $result = mysqli_query($conn, $sql);
 while ($row = mysqli_fetch_assoc($result)) {
     
     echo "<div class='card m-3'>";
-    echo "<div class='card-header'>{$row['title']}</div>";
+    echo "<div class='card-header font-weight-bold'><h4>{$row['username']}: {$row['title']}</h4></div>";
     echo "<div class='card-body'>{$row['body']}</div>";
-    echo "<div class='card-footer'>Posted by {$row['username']} on {$row['created_at']}</div>";
+    echo "<div class='card-footer'>Posted on {$row['created_at']}</div>";
 
     // Display replies
     $post_id = $row['id'];
     $sql_replies = "SELECT comments.*, users.username AS commenter FROM comments JOIN users ON comments.userid_commenting = users.userid WHERE post_id = $post_id ORDER BY created_at";
     $result_replies = mysqli_query($conn, $sql_replies);
 
-    echo "<div class='card-footer'>Replies:</div>";
+    echo "<div class='card-footer font-weight-bold'><h6>Replies:</h6></div>";
     echo "<ul class='list-group list-group-flush'>";
     while ($reply = mysqli_fetch_assoc($result_replies)) {
-        echo "<li class='list-group-item'>{$reply['commenter']}: {$reply['body']} ({$reply['created_at']})</li>";
+        echo "<li class='list-group-item'><p>{$reply['commenter']}: {$reply['body']} ({$reply['created_at']})<p></li>";
     }
     echo "</ul>";
     echo "<div class='modal-body'>";
@@ -127,7 +158,6 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 ?>
 
-<!-- Form to make a new post -->
 
 </section>
 </body>
