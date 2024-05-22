@@ -7,7 +7,7 @@ session_start();
 
 if (isset($_POST['user_auth'])) {
     // Your database connection code here
-    $mysqli = new mysqli("localhost", "root","", "forum");
+    $mysqli = new mysqli("localhost", "root","","forum");
 
     // Check for errors
     if ($mysqli->connect_error) {
