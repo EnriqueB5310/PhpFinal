@@ -1,22 +1,47 @@
 <?php
- if (isset($_POST['register'])) {
-$mysqli = new mysqli("localhost","root","","forum");
+if (isset($_POST['register'])) {
+    // Create a new MySQLi object for database connection
+    $mysqli = new mysqli("localhost", "root", "", "forum");
 
-if ($mysqli->connect_error) {die ("Connection failed: " . $mysqli->connect_error); }
+    // Check the connection
+    if ($mysqli->connect_error) {
+        die("Connection failed: " . $mysqli->connect_error);
+    }
 
-$stmt = $mysqli->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)"); $stmt->bind_param("sss", $username, $email, $password); 
+    // Sanitize and validate user input
+    $username = htmlspecialchars(trim($_POST['username']));
+    $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
+    $password = trim($_POST['password']);
 
-$username = $_POST['username']; $email = $_POST['email']; $password = $_POST['password']; 
+    // Validate email
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        die("Invalid email format");
+    }
 
-$password = password_hash($password, PASSWORD_DEFAULT); 
+    // Hash the password
+    $password_hashed = password_hash($password, PASSWORD_DEFAULT);
 
-// Execute the SQL statement 
-if ($stmt->execute()) { echo "New account created successfully!"; } else { echo "Error: " . $stmt->error; } 
+    // Prepare an SQL statement with placeholders
+    $stmt = $mysqli->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+    if ($stmt === false) {
+        die("Prepare failed: " . $mysqli->error);
+    }
 
-header("Location: login.php");
+    // Bind parameters to the SQL query
+    $stmt->bind_param("sss", $username, $email, $password_hashed);
 
-// Close the connection 
-$stmt->close(); $mysqli->close(); 
+    // Execute the SQL statement
+    if ($stmt->execute()) {
+        echo "New account created successfully!";
+        // Redirect to the login page
+        header("Location: login.php");
+        exit();
+    } else {
+        echo "Error: " . $stmt->error;
+    }
 
+    // Close the statement and the connection
+    $stmt->close();
+    $mysqli->close();
 }
 ?>
